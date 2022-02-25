@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
 const config = require('../src/config');
-const port = config.port; //QUITAR ESTO
+const port = config.port;
 // const strConnection = 'mongodb+srv://vorellana:Trips$2022@cluster0.ubpkb.mongodb.net/tripsdb'; // quitar esto
 const strConnection = config.connectionDb;
 
@@ -21,6 +21,7 @@ mongoose.connect(strConnection, {
 })
 
 // ***** settings *****
+app.set('port', process.env.PORT || port);
 app.set('json spaces', 2);
 app.use(express.json()); // to recognize json format
 app.use(express.urlencoded({extended: false})); // to understand data from a form
@@ -30,7 +31,7 @@ app.use(cors());
 app.use(require('./routes/trips.routes'))
 
 // ***** starting the server *****
-app.listen(port, () => {
+app.listen(app.get('port'), () => {
     console.log(`Server on port...`)
 })
 
